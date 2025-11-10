@@ -10,6 +10,7 @@ import Login from "./routes/auth/Login";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import DepartmentManagement from "./pages/DepartmentPage";
 import AddEmployee from "./pages/EmployeeCreate";
+import AssignModule from "./pages/AssignModule";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             { path: "users", element: <Users /> },
             { path: "department", element: <DepartmentManagement /> },
             { path: "employee", element: <AddEmployee /> },
+            {path:"assign",element:<AssignModule/>}
           ],
         },
       ],

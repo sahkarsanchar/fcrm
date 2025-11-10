@@ -2,10 +2,8 @@ import axios from "axios";
 
 // Create Axios instance
 const apiAdmin = axios.create({
-  baseURL: "http://localhost:4000/api",
+  baseURL: "https://api.sacmanagementindia.com/api",
 
-  // baseURL: "https://furniture-backend-or9h.onrender.com/api",
-  
   headers: {
     "Content-Type": "application/json",
   },

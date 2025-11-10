@@ -7,7 +7,7 @@ import { AdminLoginService } from "../../services/api.service";
 import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const [isLoading, setLoading] = useState(false);
   const [hide, setHide] = useState(false);
   const [error, setError] = useState("");
@@ -24,14 +24,6 @@ const Login = () => {
       console.log(res);
       const user = res.data.user;
       const token = res.data.token;
-
-      // Admin-only check
-      if (user.role !== "admin") {
-        setError("Access denied. Only admins can login.");
-        setLoading(false);
-        return;
-      }
-
       setToken(token);
       login(user);
       navigate("/dashboard");
@@ -64,11 +56,11 @@ const Login = () => {
               Email
             </label>
             <input
-              type="email"
+              type="text"
               required
-              value={formData.email}
+              value={formData.username}
               onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
+                setFormData({ ...formData, username: e.target.value })
               }
               placeholder="name@example.com"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"

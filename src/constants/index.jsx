@@ -1,14 +1,7 @@
 import {
   Home,
-  Image as BannerIcon,
-  Boxes as ProductsIcon,
-  Folder as CategoryIcon,
-  FolderPlus as SubCategoryIcon,
-  Newspaper as BlogIcon,
-  MessageSquareQuote as TestimonialIcon,
-  ShoppingCart as OrderIcon,
   Users,
-  Settings,
+  IdCard,
 } from "lucide-react";
 
 export const navbarLinks = [
@@ -17,63 +10,26 @@ export const navbarLinks = [
       {
         label: "Home",
         icon: Home,
-        path: "/dashboard", // was "/"
+        path: "/dashboard",
       },
-      {
-        label: "Banner",
-        icon: BannerIcon,
-        path: "/dashboard/banner", // was "/banner"
-      },
-      {
-        label: "Products",
-        icon: ProductsIcon,
-        path: "/dashboard/products",
-      },
-      {
-        label: "Category",
-        icon: CategoryIcon,
-        path: "/dashboard/category",
-      },
-      {
-        label: "SubCategory",
-        icon: SubCategoryIcon,
-        path: "/dashboard/subcategory",
-      },
-      {
-        label: "Blogs",
-        icon: BlogIcon,
-        path: "/dashboard/blogs",
-      },
-      {
-        label: "Testimonial",
-        icon: TestimonialIcon,
-        path: "/dashboard/testimonials",
-      },
-      // {
-      //   label: "Order",
-      //   icon: OrderIcon,
-      //   path: "/dashboard/orders",
-      // },
     ],
   },
   {
-    title: "Users",
     links: [
       {
-        label: "User",
+        label: "Department",
         icon: Users,
-        path: "/dashboard/users",
+        path: "/dashboard/department",
       },
     ],
   },
-  // {
-  //   title: "Settings",
-  //   links: [
-  //     {
-  //       label: "Settings",
-  //       icon: Settings,
-  //       path: "/dashboard/settings",
-  //     },
-  //   ],
-  // },
+  {
+    links: [
+      {
+        label: "Manage Employee",
+        icon: IdCard,
+        path: "/dashboard/employee",
+      },
+    ],
+  },
 ];

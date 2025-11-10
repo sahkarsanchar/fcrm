@@ -143,29 +143,34 @@ const DepartmentManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow-md border">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
-          <Building className="text-orange-500" /> Department & Position Management
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 p-8">
+      <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl border border-orange-100">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-3 bg-gradient-to-br from-orange-500 to-pink-500 rounded-2xl shadow-lg">
+            <Building className="text-white" size={32} />
+          </div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
+            Department & Position Management
+          </h1>
+        </div>
 
         {/* Tabs */}
-        <div className="flex border-b mb-6">
+        <div className="flex gap-2 mb-8 bg-gray-100 p-1.5 rounded-2xl">
           <button
-            className={`px-6 py-2 font-medium ${
+            className={`flex-1 px-6 py-3 font-semibold rounded-xl transition-all duration-300 ${
               activeTab === "departments"
-                ? "border-b-2 border-orange-500 text-orange-600"
-                : "text-gray-500 hover:text-gray-800"
+                ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg transform scale-105"
+                : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
             }`}
             onClick={() => setActiveTab("departments")}
           >
             Departments
           </button>
           <button
-            className={`px-6 py-2 font-medium ${
+            className={`flex-1 px-6 py-3 font-semibold rounded-xl transition-all duration-300 ${
               activeTab === "positions"
-                ? "border-b-2 border-orange-500 text-orange-600"
-                : "text-gray-500 hover:text-gray-800"
+                ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg transform scale-105"
+                : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
             }`}
             onClick={() => setActiveTab("positions")}
           >
@@ -177,44 +182,49 @@ const DepartmentManagement = () => {
         {activeTab === "departments" ? (
           // -------------------- DEPARTMENTS --------------------
           <div>
-            <form onSubmit={handleAddDepartment} className="flex gap-3 mb-6">
+            <form onSubmit={handleAddDepartment} className="flex gap-3 mb-8">
               <input
                 type="text"
                 value={deptName}
                 onChange={(e) => setDeptName(e.target.value)}
                 placeholder="Enter department name (e.g. HR, IT, Finance)"
-                className="flex-1 border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-orange-400 outline-none"
+                className="flex-1 border-2 border-gray-200 rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
               />
               <button
                 disabled={loading}
                 type="submit"
-                className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-xl hover:bg-orange-600 transition disabled:opacity-50"
+                className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-3.5 rounded-2xl hover:from-orange-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 font-semibold"
               >
-                <Plus size={18} /> Add
+                <Plus size={20} /> Add
               </button>
             </form>
 
             {/* List Departments */}
             {departments.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">
-                No departments added yet.
-              </p>
+              <div className="text-center py-16">
+                <div className="inline-flex p-4 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full mb-4">
+                  <Building className="text-orange-500" size={48} />
+                </div>
+                <p className="text-gray-500 text-lg">No departments added yet.</p>
+              </div>
             ) : (
               <div className="grid md:grid-cols-2 gap-4">
                 {departments.map((dept) => (
                   <div
                     key={dept._id}
-                    className="flex items-center justify-between border rounded-xl p-4 bg-gradient-to-br from-gray-50 to-white shadow-sm hover:border-orange-300 transition"
+                    className="group flex items-center justify-between border-2 border-gray-200 rounded-2xl p-5 bg-gradient-to-br from-white to-orange-50/30 shadow-md hover:shadow-xl hover:border-orange-300 transition-all duration-300 transform hover:-translate-y-1"
                   >
                     <div className="flex items-center gap-3">
-                      <Building className="text-orange-500" />
-                      <span className="text-lg font-medium capitalize">
+                      <div className="p-2.5 bg-gradient-to-br from-orange-500 to-pink-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <Building className="text-white" size={20} />
+                      </div>
+                      <span className="text-lg font-semibold capitalize text-gray-800">
                         {dept.name}
                       </span>
                     </div>
                     <button
                       onClick={() => handleDeleteDept(dept._id)}
-                      className="text-gray-400 hover:text-red-500 transition"
+                      className="text-gray-400 hover:text-red-500 transition-all duration-300 p-2 hover:bg-red-50 rounded-xl"
                     >
                       <Trash2 size={20} />
                     </button>
@@ -228,12 +238,12 @@ const DepartmentManagement = () => {
           <div>
             <form
               onSubmit={handleAddPosition}
-              className="grid md:grid-cols-3 gap-3 mb-6"
+              className="grid md:grid-cols-3 gap-3 mb-8"
             >
               <select
                 value={selectedDept}
                 onChange={(e) => setSelectedDept(e.target.value)}
-                className="border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-orange-400 outline-none"
+                className="border-2 border-gray-200 rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm font-medium"
               >
                 <option value="">Select Department</option>
                 {departments.map((d) => (
@@ -248,42 +258,57 @@ const DepartmentManagement = () => {
                 value={positionName}
                 onChange={(e) => setPositionName(e.target.value)}
                 placeholder="Enter position name (e.g. Manager, Developer)"
-                className="border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-orange-400 outline-none"
+                className="border-2 border-gray-200 rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
               />
 
               <button
                 disabled={loading}
                 type="submit"
-                className="flex items-center justify-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-xl hover:bg-orange-600 transition disabled:opacity-50"
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-3.5 rounded-2xl hover:from-orange-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 font-semibold"
               >
-                <Plus size={18} /> Add Position
+                <Plus size={20} /> Add Position
               </button>
             </form>
 
             {/* List Positions */}
             {positions.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">
-                No positions added yet.
-              </p>
+              <div className="text-center py-16">
+                <div className="inline-flex p-4 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full mb-4">
+                  <Building className="text-orange-500" size={48} />
+                </div>
+                <p className="text-gray-500 text-lg">No positions added yet.</p>
+              </div>
             ) : (
               <div className="grid md:grid-cols-2 gap-4">
-                {positions.map((pos) => (
-                  <div
-                    key={pos._id}
-                    className="flex items-center justify-between border rounded-xl p-4 bg-gradient-to-br from-gray-50 to-white shadow-sm hover:border-orange-300 transition"
-                  >
-                    <div>
-                      <h3 className="text-lg font-semibold">{pos.name}</h3>
-                      <p className="text-sm text-gray-500">ID: {pos._id}</p>
-                    </div>
-                    <button
-                      onClick={() => handleDeletePosition(pos._id)}
-                      className="text-gray-400 hover:text-red-500 transition"
+                {positions.map((pos) => {
+                  // Find the department name based on position's assigned department ID
+                  const department = departments.find((dept) =>
+                    dept.positions?.some((p) => p._id === pos._id)
+                  );
+
+                  return (
+                    <div
+                      key={pos._id}
+                      className="group flex items-center justify-between border-2 border-gray-200 rounded-2xl p-5 bg-gradient-to-br from-white to-purple-50/30 shadow-md hover:shadow-xl hover:border-orange-300 transition-all duration-300 transform hover:-translate-y-1"
                     >
-                      <Trash2 size={20} />
-                    </button>
-                  </div>
-                ))}
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-1">{pos.name}</h3>
+                        <p className="text-sm text-gray-500">
+                          Department:{" "}
+                          <span className="font-semibold text-transparent bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text">
+                            {department ? department.name : "Unassigned"}
+                          </span>
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleDeletePosition(pos._id)}
+                        className="text-gray-400 hover:text-red-500 transition-all duration-300 p-2 hover:bg-red-50 rounded-xl"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

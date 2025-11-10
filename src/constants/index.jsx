@@ -32,4 +32,13 @@ export const navbarLinks = [
       },
     ],
   },
+  {
+    links: [
+      {
+        label: "All Emp",
+        icon: IdCard,
+        path: "/dashboard/users",
+      },
+    ],
+  },
 ];

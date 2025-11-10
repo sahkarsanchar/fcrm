@@ -105,3 +105,7 @@ export const LoginUser = (data) => {
   return apiAdmin.post("/dep/user/login", data);
 };
 
+export const GetAllDepartmentRoleService = () => {
+  apiAdmin.get("/dep/department");
+}
+

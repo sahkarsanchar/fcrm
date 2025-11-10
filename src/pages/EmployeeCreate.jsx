@@ -150,9 +150,8 @@ export default function EmployeeCreate() {
 
       const departmentName =
         departments.find((d) => d._id === formData.department)?.name || "";
-      const positionName =
-        positions.find((p) => p._id === formData.position)?.name || "";
-
+      const positionName = formData.position;
+     
       formDataToSend.append("department", departmentName);
       formDataToSend.append("position", positionName);
       formDataToSend.append("level", formData.level);

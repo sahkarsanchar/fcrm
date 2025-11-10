@@ -37,8 +37,7 @@ export default function EmployeeCreate() {
     const fetchDepartments = async () => {
       try {
         const res = await GetAllDepartments();
-        console.log(res);
-        setDepartments(res.data?.data || []);
+        setDepartments(res.data.data || []);
       } catch (error) {
         console.error("Error fetching departments:", error);
       }
@@ -130,60 +129,34 @@ export default function EmployeeCreate() {
 
   // ✅ Submit form
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("password", formData.password);
-      formDataToSend.append("department", formData.department);
-      formDataToSend.append("position", formData.position);
-      formDataToSend.append("mobile", formData.mobile);
-      formDataToSend.append("level", formData.level);
+  e.preventDefault();
 
-      // ✅ Append address
-      formDataToSend.append("street", formData.address.street);
-      formDataToSend.append("city", formData.address.city);
-      formDataToSend.append("state", formData.address.state);
-      formDataToSend.append("postalCode", formData.address.postalCode);
-      formDataToSend.append("country", formData.address.country);
+  // 1️⃣ Log the state before sending
+  console.log("FormData state:", formData);
 
-      // ✅ Append image
-      if (formData.image) {
-        formDataToSend.append("image", formData.image);
-      }
-     console.log(formDataToSend);
-      // ✅ Use CreateUser API service
-      await CreateUser(formDataToSend);
+  // 2️⃣ Prepare FormData
+  const formDataToSend = new FormData();
+  formDataToSend.append("name", formData.name);
+  formDataToSend.append("email", formData.email);
+  formDataToSend.append("password", formData.password);
+  formDataToSend.append("mobile", formData.mobile);
+  formDataToSend.append("department", formData.department);
+  formDataToSend.append("position", formData.position);
+  if (formData.image) formDataToSend.append("image", formData.image);
 
-      alert("✅ Employee created successfully!");
+  // 3️⃣ Log what’s actually being sent
+  for (let pair of formDataToSend.entries()) {
+    console.log(pair[0], pair[1]);
+  }
 
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        department: "",
-        position: "",
-        mobile: "",
-        level: "",
-        image: null,
-        address: {
-          street: "",
-          city: "",
-          state: "",
-          postalCode: "",
-          country: "",
-        },
-      });
-      setPositions([]);
-      setStates([]);
-      setCities([]);
-    } catch (error) {
-      console.error("Error creating employee:", error);
-      alert("❌ Failed to create employee. Check console for details.");
-    }
-  };
+  // 4️⃣ Call API
+  try {
+    const res = await CreateUser(formDataToSend);
+    console.log("✅ User created:", res.data);
+  } catch (err) {
+    console.error("❌ Error creating user:", err.response?.data || err.message);
+  }
+};
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -212,7 +185,7 @@ export default function EmployeeCreate() {
               onChange={handleDepartmentChange} className="border p-2 rounded" required>
               <option value="">Select Department</option>
               {departments.map((dept) => (
-                <option key={dept._id} value={dept._id}>{dept.name}</option>
+                <option key={dept._id} value={dept.name}>{dept.name}</option>
               ))}
             </select>
 
@@ -220,7 +193,7 @@ export default function EmployeeCreate() {
               onChange={handleChange} className="border p-2 rounded" disabled={!positions.length} required>
               <option value="">Select Position</option>
               {positions.map((pos) => (
-                <option key={pos._id} value={pos._id}>{pos.name}</option>
+                <option key={pos._id} value={pos.name}>{pos.name}</option>
               ))}
             </select>
           </div>
@@ -286,7 +259,6 @@ export default function EmployeeCreate() {
 
           {/* Submit */}
           <button type="submit"
-          onClick={handleSubmit}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-md transition">
             Create Employee
           </button>

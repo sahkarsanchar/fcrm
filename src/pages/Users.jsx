@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { GetAllUsers } from "../services/api.service";
 import { Mail, Phone, Building2, Briefcase, UserCircle, Search, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, } from "lucide-react";
+import AssignModal from "../components/AssignModal";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -24,22 +25,26 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  const handleAssign = async (user) => {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+
+  const handleAssign = (user) => {
+    setSelectedUser(user);
+    setShowAssignModal(true);
+    console.log(user);
+  };
+
+  const handleConfirmAssign = async (updatedUser) => {
     try {
-      if (!window.confirm(`Assign ${user.name} (L3) as Team Leader (L2)?`)) return;
-      const response = await fetch(`/api/users/${user._id}/assign-level`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newLevel: 2, role: "Team Leader" }),
-      });
-
-      if (!response.ok) throw new Error("Failed to assign user");
-
-      alert(`${user.name} has been assigned to Level 2 as Team Leader`);
-      window.location.reload();
+      console.log("Assigning user:", updatedUser);
+      setUsers((prevUsers) =>
+        prevUsers.map((u) =>
+          u._id === updatedUser._id ? { ...u, ...updatedUser } : u
+        )
+      );
+      setShowAssignModal(false);
     } catch (error) {
-      console.error("Assign failed:", error);
-      alert("Error assigning user. Please try again.");
+      console.error("Error updating user:", error);
     }
   };
 
@@ -131,6 +136,25 @@ const Users = () => {
     return colors[level] || "bg-orange-500 hover:bg-orange-600";
   };
 
+  const getAssignedLeaderName = (user) => {
+    if (user.level === "level2") {
+      return "Assigned by Admin";
+    }
+    if (user.assignedLevel3) {
+      const leader = users.find(u => u._id === user.assignedLevel3);
+      return leader ? leader.name : "—";
+    }
+    if (user.assignedLevel2) {
+      const leader = users.find(u => u._id === user.assignedLevel2);
+      return leader ? leader.name : "—";
+    }
+    if (user.assignedLevel1) {
+      const leader = users.find(u => u._id === user.assignedLevel1);
+      return leader ? leader.name : "—";
+    }
+    return "—";
+  };
+
   if (loading)
     return (
       <div className="flex justify-center items-center h-screen bg-gradient-to-br from-orange-50 to-gray-100">
@@ -144,6 +168,7 @@ const Users = () => {
     );
 
   return (
+
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-gray-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -276,6 +301,9 @@ const Users = () => {
                                 Position
                               </th>
                               <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                Assigned To
+                              </th>
+                              <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                                 Created
                               </th>
                               <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
@@ -331,6 +359,15 @@ const Users = () => {
                                     {user.position || "Not Assigned"}
                                   </span>
                                 </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                  {getAssignedLeaderName(user) !== "—" ? (
+                                    <span className="text-green-600 font-semibold">
+                                      {getAssignedLeaderName(user)}
+                                    </span>
+                                  ) : (
+                                    <span className="text-gray-400">Not Assigned</span>
+                                  )}
+                                </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                   {new Date(user.createdAt).toLocaleDateString(
                                     "en-IN",
@@ -343,18 +380,17 @@ const Users = () => {
                                 </td>
 
                                 {/* Action */}
+
                                 <td className="px-6 py-4 whitespace-nowrap text-right">
-                                  {user.level === "3" ? (
+                                  {user.level !== "level2" ? (
                                     <button
                                       onClick={() => handleAssign(user)}
                                       className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform"
                                     >
-                                      Assign as Team Leader (L2)
+                                      Assign
                                     </button>
                                   ) : (
-                                    <span className="text-gray-400 text-sm">
-                                      —
-                                    </span>
+                                    <span className="text-gray-400 text-sm">—</span>
                                   )}
                                 </td>
                               </tr>
@@ -362,6 +398,13 @@ const Users = () => {
                           </tbody>
                         </table>
                       </div>
+                      <AssignModal
+                        show={showAssignModal}
+                        onClose={() => setShowAssignModal(false)}
+                        user={selectedUser}
+                        onConfirm={handleConfirmAssign}
+                      />
+
 
                       {/* Pagination */}
                       {totalPages > 1 && (

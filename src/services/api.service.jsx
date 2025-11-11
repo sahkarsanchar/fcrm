@@ -109,3 +109,7 @@ export const GetAllDepartmentRoleService = () => {
   apiAdmin.get("/dep/department");
 }
 
+
+export const AssignUserService = async (data) => {
+  return apiAdmin.post("/ass/assign", data);
+};

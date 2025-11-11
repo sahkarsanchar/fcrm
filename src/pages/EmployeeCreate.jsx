@@ -379,7 +379,6 @@ export default function EmployeeCreate() {
                   className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-400 focus:border-purple-400 outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm font-medium appearance-none cursor-pointer"
                 >
                   <option value="">Select Level</option>
-                  <option value="level1">Level 1</option>
                   <option value="level2">Level 2</option>
                   <option value="level3">Level 3</option>
                   <option value="level4">Level 4</option>
